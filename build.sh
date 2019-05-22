@@ -16,7 +16,7 @@ trap cleanup_dirs EXIT
 # extract img files and nested casper root fs
 iso_path="$(ls ${INPUT_DIR}/*.iso)"
 osirrox -indev "${iso_path}" -extract / "${img_dir}"
-dd if="${iso_path}" bs=512 count=1 of="${img_dir}/isolinux/isohdpfx.bin"
+dd bs=1 count=446 if="${iso_path}" of="${img_dir}/isolinux/isohdpfx.bin"
 rm -r "${squashfs_dir}" # ensure dest doesn't exist
 unsquashfs -dest "${squashfs_dir}" "${img_dir}/casper/filesystem.squashfs"
 
@@ -75,20 +75,17 @@ pushd "${img_dir}" > /dev/null
     grep -v isolinux/boot.cat > md5sum.txt
 
   # build new iso
-  xorriso \
-    -as mkisofs \
-    -isohybrid-mbr isolinux/isohdpfx.bin \
-    -c isolinux/boot.cat \
-    -b isolinux/isolinux.bin \
-    -volid "${IMAGE_NAME}" \
-    -no-emul-boot \
-    -boot-load-size 4 \
-    -boot-info-table \
-    -eltorito-alt-boot \
-    -e boot/grub/efi.img \
-    -no-emul-boot \
-    -isohybrid-gpt-basdat \
-    -o "${OUTPUT_DIR}/${IMAGE_NAME}.iso" .
+  xorriso -as mkisofs -r -V "${IMAGE_NAME}" \
+            -cache-inodes -J -l \
+            -isohybrid-mbr isolinux/isohdpfx.bin \
+            -c isolinux/boot.cat \
+            -b isolinux/isolinux.bin \
+               -no-emul-boot -boot-load-size 4 -boot-info-table \
+            -eltorito-alt-boot \
+            -e boot/grub/efi.img \
+               -no-emul-boot -isohybrid-gpt-basdat \
+            -o "${OUTPUT_DIR}/${IMAGE_NAME}.iso" \
+            .
 
   # sanity check for bootable partition
   fdisk -lu "${OUTPUT_DIR}/${IMAGE_NAME}.iso"
