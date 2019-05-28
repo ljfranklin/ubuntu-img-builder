@@ -1,0 +1,14 @@
+[Unit]
+Description=Allow passing cloud-init networking from datasource
+Wants=local-fs.target
+After=local-fs.target
+DefaultDependencies=no
+Before=cloud-init-local.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/rm -f /etc/cloud/cloud.cfg.d/50-curtin-networking.cfg
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

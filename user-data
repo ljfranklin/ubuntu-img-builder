@@ -1,0 +1,30 @@
+#cloud-config
+# vim: syntax=yaml
+#
+
+hostname: mia
+manage_etc_hosts: true
+
+users:
+  - name: ubuntu
+    # plain text: ubuntu
+    # generate new password with `mkpasswd --method=SHA-512 --rounds=4096`
+    passwd: '$6$rounds=4096$tikKgl4nljt1sUZ$vQ71HkFmV1kGx7SS9oczH6ZwcRr2Zsv7m4IvkOV2MdRBNF.VsbPH3jFO078wEVa68/TRwBHFVpFEkMlOp55EH1'
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    home: /home/ubuntu
+    gecos: Ubuntu
+    groups: [adm, audio, cdrom, dialout, floppy, video, plugdev, dip, netdev]
+    # set to `true` to disable password login from console
+    lock_passwd: false
+    ssh_pwauth: no
+    ssh_authorized_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDg6UmBCORPOiJZZuT0hJjstupK17srcqjwYU59K4dyDgxWsPzTINN1AZlCkcSbC2rcqbdSlK4k1SAvnpSHMH0L80fNTGeY6TjXzWdJBvIOB3VkMJIQQCO/FrJKPNCJJcsksaChX30DFK9rZU8EXMZXaCPKjMTIIBMZ43tSyuHJn19+e007KaPGgW6kQ+oLzWiDOgjZhJ0ga28WTODMqKXfW56nV9pXM3YajkNu+caOgsoRd/7cSyI51T/Gk8bX3heWMK3WkI33975jvw9abs1Ue9ZrriVTmrYRncTmpLL4JgBngKzOgnKJPaRarCwi2eCUhnotxGInwutQGfhqkKuzaW461jLeFgNODPuYUp7YnwzLIwwSIfapdaiMbBTfX6h7k5vIF0LpSf6lQKz1x4hgycXTPoGpn9DtAMNLvjvMuGaJJzDwolz8PjnqxzGtFNrgiCnzm0lpIoodjXkefTafVMCQ+UGwyc1gv9bb5B5vsudYx0ll5Nj090DBu7RFPex1z8PL57B0sK3OFNOKFuBPwlBbumC+9TSUvn4yhSgKmR3smEyTbEVA7eRSl/IyFDiJLvYtEGTPiVRdohUGUCvJQ5dT+ipcjTZDTT4PDasTs0NBeiXISDEHQ5BXW0USWFMqgCTefzCXcL37QQWCkDhXzUa0srn/ik3sgvsBZ/N4/w== cardno:000609769765"
+
+locale: "en_US.UTF-8"
+
+package_upgrade: false
+
+packages:
+  - htop
+  - openssh-server

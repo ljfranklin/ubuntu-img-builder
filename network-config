@@ -1,0 +1,16 @@
+#network-config
+# vim: syntax=yaml
+#
+version: 2
+ethernets:
+  interface0:
+    match:
+      # assumes a single ethernet interface
+      name: 'e*'
+    dhcp4: true
+    addresses:
+    - 192.168.2.99/24
+    gateway4: 192.168.2.1
+    nameservers:
+      addresses:
+      - 192.168.2.1

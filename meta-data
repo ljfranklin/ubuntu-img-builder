@@ -1,0 +1,6 @@
+#meta-data
+# vim: syntax=yaml
+# dummy nocloud metadata
+
+instance-id: iid-cloud-123456
+local-hostname: mia
